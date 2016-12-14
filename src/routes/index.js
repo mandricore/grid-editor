@@ -8,7 +8,7 @@ const routes = [
   { path: '/model', component: c.CustomModelManager, name: 'model' }
 ]
 
-console.log('routes', routes)
+// console.log('routes', routes)
 
 export default routes
 

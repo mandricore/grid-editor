@@ -17,8 +17,8 @@ Vue.material.theme.register('default', {
   accent: 'pink'
 })
 
-console.log('VueDragula', Vue2Dragula)
-console.log('router', router)
+/* console.log('VueDragula', Vue2Dragula)
+console.log('router', router) */
 
 Vue.config.debug = true
 

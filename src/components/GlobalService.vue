@@ -4,25 +4,24 @@
       <div class="parent">
         <label>Global Service example</label>
         <div class="wrapper">
-          <div class="container" v-dragula="colOne" drake="first">
-            <div v-for="text in colOne" @click="onClick">{{text}} [click me]</div>
+          <div class="container" v-dragula="colOne" bag="col1">
+            <div v-for="text in colOne" >{{text.title}}</div>
           </div>
-          <div class="container" v-dragula="colTwo" drake="first">
-            <div v-for="text in colTwo">
-              <span class="handle">+</span>
-              <span>{{text}}</text>
-            </div>
+
+          <div class="container" v-dragula="colTwo" bag="col1">
+            <div v-for="text in colTwo" >{{text.title}}</div>
           </div>
+
         </div>
         <h4>Result</h5>
         <p>
           <h5>colOne</h5>
-          <div v-for="text in colOne">{{text}}</div>
+          <div v-for="text in colOne">{{text.title}}</div>
         </p>
 
         <p>
           <h5>colTwo</h5>
-          <div v-for="text in colTwo">{{text}}</div>
+          <div v-for="text in colTwo">{{text.title}}</div>
         </p>
       </div>
     </div>
@@ -62,19 +61,29 @@ export default {
   data () {
     return {
       colOne: [
-        'You can move these elements between these two containers',
-        'Moving them anywhere else isn"t quite possible',
-        'There"s also the possibility of moving elements around in the same container, changing their position'
+        {'title': '1 You can move these elements between these two containers'},
+        {'title': '2 Moving them anywhere else isn"t quite possible'},
+        {'title': '3 There"s also the possibility of moving elements around in the same container, changing their position'}
       ],
       colTwo: [
-        'This is the default use case. You only need to specify the containers you want to use',
-        'More interactive use cases lie ahead',
-        'Another message'
+        {'title': '4 This is the default use case. You only need to specify the containers you want to use'},
+        {'title': '5 More interactive use cases lie ahead'},
+        {'title': '6 Another message'}
       ],
-      categories: [
-        [1, 2, 3],
-        [4, 5, 6]
+      col3: [
+        '1 You can move these elements between these two containers',
+        '2 Moving them anywhere else isn"t quite possible',
+        '3 There"s also the possibility of moving elements around in the same container, changing their position'
       ],
+      colTwo2: [
+        '4 This is the default use case. You only need to specify the containers you want to use',
+        '5 More interactive use cases lie ahead',
+        '6 Another message'
+      ],
+      // categories: [
+      //   [1, 2, 3],
+      //   [4, 5, 6]
+      // ],
       copyOne: [
         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
         'Aenean commodo ligula eget dolor. Aenean massa.'
@@ -96,12 +105,12 @@ export default {
     service.options('first', {
     })
 
-    service.options('second', {
-    })
+    // service.options('second', {
+    // })
 
-    service.options('third', {
-      copy: true
-    })
+    // service.options('third', {
+    //   copy: true
+    // })
 
     console.log('GLOBAL SERVICE: ready')
   },
