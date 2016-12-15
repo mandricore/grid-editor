@@ -459,3 +459,32 @@ Feel free to improve and come with suggestions :)
 MIT
 
 (c) Kristian Mandrup 2016
+
+Required Steps To run the application with latest changes
+==========================================================================
+
+/node_modules/eslint-config-standard/eslintrc.json
+To remove error for jquery, In above file "global" key should be
+"globals": {
+    "document": false,
+    "navigator": false,
+    "window": false,
+    "$": true,
+    "jQuery": true
+  },
+
+
+
+The node module 
+/node_modules/jquery-resizable/resizable.js
+
+replace the content of the file with the content of this url
+https://rawgit.com/RickStrahl/jquery-resizable/master/src/jquery-resizable.js
+
+
+
+
+
+
+
+
