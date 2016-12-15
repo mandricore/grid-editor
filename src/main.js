@@ -9,6 +9,9 @@ import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
 import 'dragula/dist/dragula.css'
 import './assets/styles.css'
+import 'jquery/dist/jquery.min.js'
+import 'jquery-resizable/resizable.css'
+import 'jquery-resizable/resizable.js'
 
 Vue.use(VueMaterial)
 

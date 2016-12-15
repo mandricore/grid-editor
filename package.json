@@ -35,6 +35,7 @@
     "babel": "inherit"
   },
   "dependencies": {
+    "jquery-resizable": "^1.0.3",
     "lodash": "^4.17.2",
     "seamless-immutable": "^6.3.0",
     "standard": "^8.5.0",

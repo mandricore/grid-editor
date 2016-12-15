@@ -4,13 +4,23 @@
       <div class="parent">
         <label>Global Service example</label>
         <div class="wrapper">
-          <div class="container" v-dragula="colOne" drake="first">
-            <div v-for="text in colOne" :key="text.id">{{text.title}}</div>
+        <div class="main">
+          <div class="container">
+            <div class="colOne" v-dragula="colOne" drake="first">
+              <div v-for="text in colOne" :key="text.id" >{{text.title}}</div>
+            </div>
           </div>
 
-          <div class="container" v-dragula="colTwo" drake="first">
-            <div v-for="text in colTwo" :key="text.id">{{text.title}}</div>
+          <div class="splitter-horizontal"></div>
+
+          <div class="container">
+            <div class="colTwo" v-dragula="colTwo" drake="first">
+              <div v-for="text in colTwo" :key="text.id">{{text.title}}</div>
+            </div>
           </div>
+
+        </div>
+        
 
         </div>
         <h4>Result</h5>
@@ -53,7 +63,23 @@
     </div>
   </section>
 </template>
-
+<style type="text/css">
+  .close{
+    float: right;
+    font-weight: bold;
+    margin-left: 15px;
+  }
+  .splitter-horizontal {
+    flex: 0 0 auto;
+    height: 18px;
+    background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/hsizegrip.png) center center no-repeat #535353;
+    cursor: row-resize;
+    z-index: 9999;
+  }
+  .main{
+    background-color:#942A57;height:450px;z-index:;overflow-y:auto;
+  }
+</style>
 <script>
 export default {
   name: 'globalService',
@@ -114,6 +140,21 @@ export default {
 
     console.log('GLOBAL SERVICE: ready')
   },
+  mounted () {
+    let service = this.$dragula.$service
+    $('.colOne').resizable({
+      handleSelector: '.splitter-horizontal',
+      resizeWidth: false,
+      onDragStart: function () {
+        $('.colOne').css({'height': 'auto', 'overflow-y': 'auto'})
+      }
+    })
+    service.eventBus.$on('drop', (args) => {
+      if (args.source['_prevClass'] === 'colTwo' && args.container['_prevClass'] === 'colOne') {
+        $('.colOne').css({'height': 'auto', 'overflow-y': 'auto'})
+      }
+    })
+  },
   methods: {
     onClick () {
       window.alert('click event')
@@ -126,4 +167,5 @@ export default {
     }
   }
 }
+// $(document).ready()
 </script>
