@@ -4,12 +4,12 @@
       <div class="parent">
         <label>Global Service example</label>
         <div class="wrapper">
-          <div class="container" v-dragula="colOne" bag="col1">
-            <div v-for="text in colOne" >{{text.title}}</div>
+          <div class="container" v-dragula="colOne" drake="first">
+            <div v-for="text in colOne" :key="text.id">{{text.title}}</div>
           </div>
 
-          <div class="container" v-dragula="colTwo" bag="col1">
-            <div v-for="text in colTwo" >{{text.title}}</div>
+          <div class="container" v-dragula="colTwo" drake="first">
+            <div v-for="text in colTwo" :key="text.id">{{text.title}}</div>
           </div>
 
         </div>
@@ -61,14 +61,14 @@ export default {
   data () {
     return {
       colOne: [
-        {'title': '1 You can move these elements between these two containers'},
-        {'title': '2 Moving them anywhere else isn"t quite possible'},
-        {'title': '3 There"s also the possibility of moving elements around in the same container, changing their position'}
+        {'id': 'a', 'title': '1 You can move these elements between these two containers'},
+        {'id': 'b', 'title': '2 Moving them anywhere else isn"t quite possible'},
+        {'id': 'c', 'title': '3 There"s also the possibility of moving elements around in the same container, changing their position'}
       ],
       colTwo: [
-        {'title': '4 This is the default use case. You only need to specify the containers you want to use'},
-        {'title': '5 More interactive use cases lie ahead'},
-        {'title': '6 Another message'}
+        {'id': 'd', 'title': '4 This is the default use case. You only need to specify the containers you want to use'},
+        {'id': 'e', 'title': '5 More interactive use cases lie ahead'},
+        {'id': 'f', 'title': '6 Another message'}
       ],
       col3: [
         '1 You can move these elements between these two containers',
@@ -96,14 +96,14 @@ export default {
   },
   created () {
     console.log('GLOBAL SERVICE: created')
-    let service = this.$dragula.$service
+    // let service = this.$dragula.$service
 
     // IMPORTANT!! setup empty named drakes matching
     // directive drake configs in template
     // otherwise may (currently) result in conflict
 
-    service.options('first', {
-    })
+    // service.options('first', {
+    // })
 
     // service.options('second', {
     // })
