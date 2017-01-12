@@ -5,4 +5,4 @@ npm install
 npm run dev
 
 # Feature
-Hover on '+' button and you will see 4 arrow button, clicking on right arrow button will create vertical splitter deviding main area into two panel
+Hover on '+' button and you will see 4 arrow button, clicking on right arrow button will create vertical splitter dividing main area into two panel
