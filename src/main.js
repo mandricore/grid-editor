@@ -1,43 +1,22 @@
+// === DEFAULT / CUSTOM STYLE ===
+// WARNING! always comment out ONE of the two require() calls below.
+// 1. use next line to activate CUSTOM STYLE (./src/themes)
+// require(`./themes/app.${__THEME}.styl`)
+// 2. or, use next line to activate DEFAULT QUASAR STYLE
+require(`quasar/dist/quasar.${__THEME}.css`)
+// ==============================
+
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-
+import Quasar from 'quasar'
 import router from './router'
-import { Vue2Dragula } from 'vue2-dragula'
-import App from './App'
 
-import VueMaterial from 'vue-material'
-import 'vue-material/dist/vue-material.css'
-import 'dragula/dist/dragula.css'
-import './assets/styles.css'
+Vue.use(Quasar) // Install Quasar Framework
 
-Vue.use(VueMaterial)
-
-Vue.material.theme.register('default', {
-  primary: 'cyan',
-  accent: 'pink'
+Quasar.start(() => {
+  /* eslint-disable no-new */
+  new Vue({
+    el: '#q-app',
+    router,
+    render: h => h(require('./App'))
+  })
 })
-
-console.log('VueDragula', Vue2Dragula)
-console.log('router', router)
-
-Vue.config.debug = true
-// Vue.use(jquery)
-Vue.use(Vue2Dragula, {
-  logging: {
-    directive: true,
-    plugin: true,
-    service: true,
-    dragHandler: true
-  }
-})
-
-Vue.use(VueRouter)
-
-/* eslint-disable no-new */
-new Vue({
-  // el: '#app',
-  router,
-  ...App
-}).$mount('#app')
-
-router.push('home')

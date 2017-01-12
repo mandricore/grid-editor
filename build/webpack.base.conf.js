@@ -1,95 +1,104 @@
-var path = require('path')
-var config = require('../config')
-var utils = require('./utils')
-var projectRoot = path.resolve(__dirname, '../')
-
-var env = process.env.NODE_ENV
-// check env & config/index.js to decide weither to enable CSS Sourcemaps for the
-// various preprocessor loaders added to vue-loader at the end of this file
-var cssSourceMapDev = (env === 'development' && config.dev.cssSourceMap)
-var cssSourceMapProd = (env === 'production' && config.build.productionSourceMap)
-var useCssSourceMap = cssSourceMapDev || cssSourceMapProd
+var
+  path = require('path'),
+  webpack = require('webpack'),
+  config = require('../config'),
+  cssUtils = require('./css-utils'),
+  env = require('./env-utils'),
+  merge = require('webpack-merge'),
+  projectRoot = path.resolve(__dirname, '../'),
+  ProgressBarPlugin = require('progress-bar-webpack-plugin'),
+  useCssSourceMap =
+    (env.dev && config.dev.cssSourceMap) ||
+    (env.prod && config.build.productionSourceMap)
 
 module.exports = {
   entry: {
     app: './src/main.js'
   },
   output: {
-    path: config.build.assetsRoot,
-    publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
-    filename: '[name].js'
+    path: path.resolve(__dirname, '../dist'),
+    publicPath: config[env.prod ? 'build' : 'dev'].publicPath,
+    filename: 'js/[name].js',
+    chunkFilename: 'js/[id].[chunkhash].js'
   },
   resolve: {
-    extensions: ['', '.js', '.vue'],
-    fallback: [path.join(__dirname, '../node_modules')],
-    alias: {
-      'vue$': 'vue/dist/vue',
-      'src': path.resolve(__dirname, '../src'),
-      'assets': path.resolve(__dirname, '../src/assets'),
-      'components': path.resolve(__dirname, '../src/components'),
-      'jquery': path.resolve(__dirname, '../node_modules/jquery/src/jquery')
-    }
-  },
-  resolveLoader: {
-    fallback: [path.join(__dirname, '../node_modules')]
+    extensions: ['.js', '.vue'],
+    modules: [
+      path.join(__dirname, '../src'),
+      'node_modules'
+    ],
+    alias: config.aliases
   },
   module: {
-    preLoaders: [
-      {
-        test: /\.vue$/,
-        loader: 'eslint',
+    rules: [
+      { // eslint
+        enforce: 'pre',
+        test: /\.(vue|js)$/,
+        loader: 'eslint-loader',
         include: projectRoot,
         exclude: /node_modules/
       },
       {
         test: /\.js$/,
-        loader: 'eslint',
+        loader: 'babel-loader',
         include: projectRoot,
         exclude: /node_modules/
-      }
-    ],
-    loaders: [
-      {
-        test: /\.vue$/,
-        loader: 'vue'
       },
       {
-        test: /\.js$/,
-        loader: 'babel',
-        include: projectRoot,
-        exclude: /node_modules/
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          postcss: cssUtils.postcss,
+          loaders: merge({js: 'babel-loader'}, cssUtils.styleLoaders({
+            sourceMap: useCssSourceMap,
+            extract: env.prod
+          }))
+        }
       },
       {
         test: /\.json$/,
-        loader: 'json'
+        loader: 'json-loader'
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url',
-        query: {
+        loader: 'url-loader',
+        options: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: 'img/[name].[hash:7].[ext]'
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url',
-        query: {
+        loader: 'url-loader',
+        options: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+          name: 'fonts/[name].[hash:7].[ext]'
         }
       }
     ]
   },
-  eslint: {
-    formatter: require('eslint-friendly-formatter')
-  },
-  vue: {
-    loaders: utils.cssLoaders({ sourceMap: useCssSourceMap }),
-    postcss: [
-      require('autoprefixer')({
-        browsers: ['last 2 versions']
-      })
-    ]
-  }
+  plugins: [
+    /* Uncomment if you wish to load only one Moment locale: */
+    // new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
+
+    new webpack.DefinePlugin({
+      'process.env': config[env.prod ? 'build' : 'dev'].env,
+      'DEV': env.dev,
+      'PROD': env.prod,
+      '__THEME': '"' + env.platform.theme + '"'
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: env.prod,
+      options: {
+        context: path.resolve(__dirname, '../src'),
+        eslint: {
+          formatter: require('eslint-friendly-formatter')
+        },
+        postcss: cssUtils.postcss
+      }
+    }),
+    new ProgressBarPlugin({
+      format: config.progressFormat
+    })
+  ]
 }
